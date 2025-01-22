@@ -102,7 +102,7 @@ async def filter_(bot, message):
                 )
         else:
             await message.reply_text(
-                text="No results found.\nOr retry with the correct spelling 🤐",
+                text="NO RESULTS FOUND 😥\n \n Possible reasons: \n 1. Spelling തെറ്റായിരിക്കാം. \n 2. OTT ഇറങ്ങിയിട്ടുണ്ടാവില്ല. \n \n പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.",
                 quote=True,
             )
 
@@ -135,7 +135,7 @@ async def pages(bot, query):
             pass
     else:
         await query.message.reply_text(
-            text="No results found.\nOr retry with the correct spelling 🤐",
+            text="NO RESULTS FOUND 😥\n \n Possible reasons: \n 1. Spelling തെറ്റായിരിക്കാം. \n 2. OTT ഇറങ്ങിയിട്ടുണ്ടാവില്ല. \n \n പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.",
             quote=True,
         )
 
