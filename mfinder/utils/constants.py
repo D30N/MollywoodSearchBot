@@ -61,15 +61,13 @@ __You can just forward the message from database channel for starting indexing, 
 """
 
 SET_MSG = """
-**Below are your current settings:**
-`Info`
-**Precise Mode:** 
-- __If Enabled, bot will match the word & return results with only the exact match__
-- __If Disabled, bot will match the word & return all the results containing the word__    
-**Result Mode:**
-- __If HyperLink, bot will return results in hyperlink format__
-- __If Button, bot will return results in button format__
-- __If List, bot will return results in list format__
+Precise Mode: 
+• Enabled ആണെങ്കിൽ അയക്കുന്ന keyword ന് കൃത്യം match ആയ results ആവും കാണിക്കുക.
+• Disabled ആണെങ്കിൽ അയക്കുന്ന keyword മായി സാമ്യമുള്ള results കാണിക്കും.
 
+Result Mode:
+• HyperLink (preferred) ആണെങ്കിൽ link രൂപത്തിലുള്ള result list കിട്ടും.
+• Button ആണെങ്കിൽ ബട്ടൺ രൂപത്തിലാവും result list കിട്ടുക.
+• List ലിസ്റ്റ് ആയി തന്നെ result list കാണിക്കും.
 
-__You can toggle with right side buttons__:-"""
+താഴെ വലതു വശത്തെ ബട്ടനിൽ ക്ലിക്ക് ചെയ്ത് settings customize ചെയ്യാവുന്നതാണ്."""
