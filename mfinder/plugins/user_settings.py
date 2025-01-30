@@ -47,12 +47,12 @@ async def set_list_mode(bot, query):
         await change_search_settings(
             user_id, button_mode=False, link_mode=True, list_mode=False
         )
-    if result_mode == "list":
-        await change_search_settings(
-            user_id, button_mode=False, link_mode=False, list_mode=True
-        )
+    # if result_mode == "list":
+    #     await change_search_settings(
+    #         user_id, button_mode=False, link_mode=False, list_mode=True
+    #     )
     if result_mode == "mode":
-        await query.answer(text="Toggle Button/Link/List Mode", show_alert=False)
+        await query.answer(text="Toggle Button/Link Mode", show_alert=False)
         return
 
     set_kb = await find_search_settings(user_id)
@@ -90,25 +90,25 @@ async def find_search_settings(user_id):
         InlineKeyboardButton("[Result Mode]:", callback_data="res mode"),
     ]
 
-    btn_kb = InlineKeyboardButton("📃 List", callback_data="res btnn")
+    btn_kb = InlineKeyboardButton("🔗 HyperLink", callback_data="res btnn")
     link_kb = InlineKeyboardButton("🔳 Button", callback_data="res link")
-    list_kb = InlineKeyboardButton("🔗 HyperLink", callback_data="res list")
+    # list_kb = InlineKeyboardButton("🔗 HyperLink", callback_data="res list")
 
     if search_settings:
         button_mode = search_settings.button_mode
         link_mode = search_settings.link_mode
-        list_mode = search_settings.list_mode
+        # list_mode = search_settings.list_mode
         if button_mode:
             bkb.append(link_kb)
         elif link_mode:
-            bkb.append(list_kb)
-        elif list_mode:
             bkb.append(btn_kb)
+        # elif list_mode:
+        #     bkb.append(btn_kb)
         else:
-            await change_search_settings(user_id, link_mode=True)
-            bkb.append(list_kb)
+            await change_search_settings(user_id, button_mode=True)
+            bkb.append(btn_kb)
     else:
-        await change_search_settings(user_id, link_mode=True)
+        await change_search_settings(user_id, button_mode=True)
         bkb.append(btn_kb)
 
     set_kb = InlineKeyboardMarkup([kb, bkb])
