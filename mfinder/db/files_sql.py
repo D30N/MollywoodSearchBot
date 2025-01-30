@@ -53,9 +53,9 @@ async def save_file(media):
             LOGGER.warning("%s is already saved in the database", media.file_name)
         except NoResultFound:
             try:
-                file = SESSION.query(Files).filter_by(file_name=media.file_name).one()
-                LOGGER.warning("%s is already saved in the database", media.file_name)
-            except NoResultFound:
+            #     file = SESSION.query(Files).filter_by(file_name=media.file_name).one()
+            #     LOGGER.warning("%s is already saved in the database", media.file_name)
+            # except NoResultFound:
                 file = Files(
                     file_name=media.file_name,
                     file_id=file_id,
