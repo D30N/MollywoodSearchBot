@@ -34,7 +34,7 @@ async def filter_(bot, message):
     user_id = message.from_user.id
 
     if re.findall(r"((^\/|^,|^!|^\.|^[\U0001F600-\U0001F64F]).*)", message.text):
-    return
+    return  # This line should be indented
 
     if await is_banned(user_id):
         await message.reply_text("You are banned. You can't use this bot.", quote=True)
