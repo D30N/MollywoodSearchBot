@@ -33,7 +33,7 @@ from mfinder import LOGGER
 async def filter_(bot, message):
     user_id = message.from_user.id
 
-    if re.findall("((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F]).*)", message.text):
+    if re.findall(r"((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F]).*)", message.text):
         return
 
     if await is_banned(user_id):
