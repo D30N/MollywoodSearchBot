@@ -70,4 +70,8 @@ Result Mode:
 • Button ആണെങ്കിൽ ബട്ടൺ രൂപത്തിലാവും result list കിട്ടുക.
 • List ലിസ്റ്റ് ആയി തന്നെ result list കാണിക്കും.
 
+<<<<<<< HEAD
 താഴെ വലതു വശത്തെ ബട്ടനിൽ ക്ലിക്ക് ചെയ്ത് settings customize ചെയ്യാവുന്നതാണ്."""
+=======
+താഴെ വലതു വശത്തെ ബട്ടനിൽ ക്ലിക്ക് ചെയ്ത് settings customize ചെയ്യാവുന്നതാണ്. """
+>>>>>>> 645be2c (Updated serve.py, constants.py, and sample_const.py)
