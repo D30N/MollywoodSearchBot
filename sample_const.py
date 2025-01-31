@@ -15,6 +15,24 @@ Welcome to Malayalam-Movie-Search Bot. ✨
 ആവശ്യമുള്ള സിനിമയുടെ പേര് സ്പെല്ലിങ് തെറ്റാതെ അയക്കുക. 
 Simple ⚡
 
+⚠️ IMPORTANT 
+
+ബോട്ടിൽ സിനിമ ചോദിക്കുമ്പോൾ 
+"പ്രേമലു" എന്ന സിനിമ വേണമെങ്കിൽ,
+
+`Premalu`
+
+എന്നാണ് മെസ്സേജ് അയക്കേണ്ടത്.
+
+`Premalu Full Movie` ❌ 
+`Premalu Malayalam Movie` ❌ 
+`@MollywoodSearchBot  Premalu` ❌ 
+`Malayalam New Movie` ❌ 
+
+ഇങ്ങനെയൊക്കെ മെസ്സേജ് അയച്ചാൽ file കിട്ടില്ല.
+
+2020 എന്ന് മെസ്സേജ് അയച്ചാൽ 2020 ൽ ഇറങ്ങിയ സിനിമകളുടെ ലിസ്റ്റ് കിട്ടും.
+
 (2015 മുതൽ DVD/OTT ഇറങ്ങിയ എല്ലാ മലയാളം സിനിമകളും ഇതിൽ ലഭ്യമാണ്. കൂടാതെ, Malayalam Dubbed സിനിമകളും 1960-80 കാലഘട്ടത്തെ ചില evergreen സിനിമകളും ചേർത്തിട്ടുണ്ട്.)
 
 • Results വരുന്ന list customize ചെയ്യാൻ /settings അമർത്തുക 
