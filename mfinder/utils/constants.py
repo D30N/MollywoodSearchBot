@@ -68,8 +68,8 @@ SET_MSG = """
 **Result Mode:**
 • HyperLink (preferred) ആണെങ്കിൽ link രൂപത്തിലുള്ള result list കിട്ടും.
 • Button ആണെങ്കിൽ ബട്ടൺ രൂപത്തിലാവും result list കിട്ടുക.
-<<<<<<< HEAD
 • List ലിസ്റ്റ് ആയി തന്നെ result list കാണിക്കും.
+
 **താഴെ വലതു വശത്തെ ബട്ടനിൽ ക്ലിക്ക് ചെയ്ത് settings customize ചെയ്യാവുന്നതാണ്.**
 """
 
