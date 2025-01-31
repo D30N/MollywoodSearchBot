@@ -50,9 +50,9 @@ async def filter_(bot, message):
         except UserNotParticipant:
             link = await get_link()
             await message.reply_text(
-                text="**Please join my Update Channel to use this Bot!**",
+                text="**ഈ bot ഉപയോഗിക്കണമെങ്കിൽ ഞങ്ങളുടെ updates ചാനലായ @MollywoodChanneI ൽ join ചെയ്യണം!**",
                 reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("🤖 Join Channel", url=link)]]
+                    [[InlineKeyboardButton("🤖 Join @MollywoodChanneI", url=link)]]
                 ),
                 parse_mode=ParseMode.MARKDOWN,
                 quote=True,
@@ -102,7 +102,7 @@ async def filter_(bot, message):
                 )
         else:
             await message.reply_text(
-                text="NO RESULTS FOUND 😥\n \n Possible reasons: \n 1. Spelling തെറ്റായിരിക്കാം. \n 2. OTT ഇറങ്ങിയിട്ടുണ്ടാവില്ല. \n \n പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.",
+                text="NO RESULTS FOUND 😥\n \n Possible reasons: \n 1. Spelling തെറ്റായിരിക്കാം. \n (സിനിമയുടെ പേര് മാത്രം അയക്കുക. പ്രേമലു വേണമെങ്കിൽ premalu എന്ന് മാത്രം അയക്കുക. Premalu full movie എന്ന് അയച്ചാൽ സിനിമ കിട്ടില്ല.) \n 2. OTT ഇറങ്ങിയിട്ടുണ്ടാവില്ല. \n \n പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.",
                 quote=True,
             )
 
@@ -242,7 +242,7 @@ async def get_result(search, page_no, user_id, username):
             result = (
                 result
                 + "\n\n"
-                + "🔻 __Tap on below corresponding file number to download.__ 🔻"
+                + "🔻 __ആവശ്യമുള്ള ഫയൽ നമ്പർ നോക്കിയിട്ട് താഴെയുള്ള അതേ നമ്പറിലെ ബട്ടൺ ക്ലിക്ക് ചെയ്യുക.__ 🔻 \n \n **ഈ result mode മാറ്റി link mode അല്ലെങ്കിൽ button mode ആക്കാനായി /settings ക്ലിക്ക് ചെയ്യുക.***"
             )
         elif link_mode == "ON":
             result = result + "\n\n" + " __Tap on file name & then start to download.__"
