@@ -154,7 +154,7 @@ async def get_result(search, page_no, user_id, username):
         precise_search = "Disabled"
 
     if search_settings:
-        if search_settings.button_mode:
+        if search_settings.button_mode or search_settings.list_mode:
             button_mode = "ON"
         else:
             button_mode = "OFF"
@@ -192,31 +192,31 @@ async def get_result(search, page_no, user_id, username):
                     text=f"{filename}", callback_data=f"file {file_id}"
                 )
                 btn.append([btn_kb])
-            elif link_mode == "ON":
+            else:
                 index += 1
                 btn_count += 1
                 file_id = file.file_id
                 filename = f"**{index}.** [{file.file_name}](https://t.me/{username}/?start={file_id}) - `[{get_size(file.file_size)}]`"
                 result += "\n" + filename
-            else:
-                index += 1
-                btn_count += 1
-                file_id = file.file_id
-                filename = (
-                    f"**{index}.** `{file.file_name}` - `[{get_size(file.file_size)}]`"
-                )
-                result += "\n" + filename
+            # else:
+            #     index += 1
+            #     btn_count += 1
+            #     file_id = file.file_id
+            #     filename = (
+            #         f"**{index}.** `{file.file_name}` - `[{get_size(file.file_size)}]`"
+            #     )
+            #     result += "\n" + filename
 
-                btn_kb = InlineKeyboardButton(
-                    text=f"{index}", callback_data=f"file {file_id}"
-                )
+            #     btn_kb = InlineKeyboardButton(
+            #         text=f"{index}", callback_data=f"file {file_id}"
+            #     )
 
-                if btn_count == 1 or btn_count == 6:
-                    btn.append([btn_kb])
-                elif 6 > btn_count > 1:
-                    btn[0].append(btn_kb)
-                else:
-                    btn[1].append(btn_kb)
+            #     if btn_count == 1 or btn_count == 6:
+            #         btn.append([btn_kb])
+            #     elif 6 > btn_count > 1:
+            #         btn[0].append(btn_kb)
+            #     else:
+            #         btn[1].append(btn_kb)
 
         nxt_kb = InlineKeyboardButton(
             text="Next >>",
