@@ -174,7 +174,7 @@ async def get_result(search, page_no, user_id, username):
     elif button_mode == "OFF" and link_mode == "ON":
         search_md = "HyperLink"
     else:
-        search_md = "List Button"
+        search_md = "Hyperlink"
 
     if files:
         btn = []
