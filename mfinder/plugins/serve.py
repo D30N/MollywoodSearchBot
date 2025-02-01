@@ -33,7 +33,7 @@ from mfinder import LOGGER
 async def filter_(bot, message):
     user_id = message.from_user.id
 
-    if re.findall("((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F]).*)", message.text):
+    if re.findall(r"((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F]).*)", message.text):
         return
 
     if await is_banned(user_id):
@@ -50,9 +50,9 @@ async def filter_(bot, message):
         except UserNotParticipant:
             link = await get_link()
             await message.reply_text(
-                text="**Please join my Update Channel to use this Bot!**",
+                text="**ഈ bot ഉപയോഗിക്കണമെങ്കിൽ ഞങ്ങളുടെ updates ചാനലായ @MollywoodChanneI ൽ join ചെയ്യണം!**",
                 reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("🤖 Join Channel", url=link)]]
+                    [[InlineKeyboardButton("🤖 Join @MollywoodChanneI", url=link)]]
                 ),
                 parse_mode=ParseMode.MARKDOWN,
                 quote=True,
@@ -102,7 +102,7 @@ async def filter_(bot, message):
                 )
         else:
             await message.reply_text(
-                text="NO RESULTS FOUND 😥\n \n Possible reasons: \n 1. Spelling തെറ്റായിരിക്കാം. \n 2. OTT ഇറങ്ങിയിട്ടുണ്ടാവില്ല. \n \n പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.",
+                text="**NO RESULTS FOUND** 🧐\n \n Possible reasons: \n **1. Spelling തെറ്റായിരിക്കാം.** \n (സിനിമയുടെ പേര് മാത്രം കൃത്യമായി അയക്കുക.) \n **2. OTT ഇറങ്ങിയിട്ടുണ്ടാവില്ല.** \n (പുതിയ സിനിമകൾ OTT ഇറങ്ങിയ ശേഷം മാത്രമേ ബോട്ടിൽ കിട്ടുകയുള്ളൂ.) \n \n കൂടുതൽ സഹായത്തിന് /help അമർത്തുക. \n \n പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.",
                 quote=True,
             )
 
@@ -135,7 +135,7 @@ async def pages(bot, query):
             pass
     else:
         await query.message.reply_text(
-            text="NO RESULTS FOUND 😥\n \n Possible reasons: \n 1. Spelling തെറ്റായിരിക്കാം. \n 2. OTT ഇറങ്ങിയിട്ടുണ്ടാവില്ല. \n \n പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.",
+            text="**NO RESULTS FOUND** 🧐\n \n Possible reasons: \n **1. Spelling തെറ്റായിരിക്കാം.** \n (സിനിമയുടെ പേര് മാത്രം കൃത്യമായി അയക്കുക.) \n **2. OTT ഇറങ്ങിയിട്ടുണ്ടാവില്ല.** \n (പുതിയ സിനിമകൾ OTT ഇറങ്ങിയ ശേഷം മാത്രമേ ബോട്ടിൽ കിട്ടുകയുള്ളൂ.) \n \n കൂടുതൽ സഹായത്തിന് /help അമർത്തുക. \n \n പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.",
             quote=True,
         )
 
@@ -242,10 +242,10 @@ async def get_result(search, page_no, user_id, username):
             result = (
                 result
                 + "\n\n"
-                + "🔻 __Tap on below corresponding file number to download.__ 🔻"
+                + "🔻 __ആവശ്യമുള്ള ഫയൽ കിട്ടാനായി താഴെയുള്ള ബട്ടൺ ക്ലിക്ക് ചെയ്യുക.__ 🔻 \n \n ഈ result mode മാറ്റി 🔗 hyperlink mode ആക്കാനായി /settings ക്ലിക്ക് ചെയ്യുക."
             )
         elif link_mode == "ON":
-            result = result + "\n\n" + " __Tap on file name & then start to download.__"
+            result = result + "\n\n" + " __ആവശ്യമുള്ള file name ൽ ക്ലിക്ക് ചെയ്യുക.__"
 
         return result, btn
 
@@ -298,12 +298,12 @@ async def get_files(bot, query):
             minsec = str(delay) + " mins" if delay_dur > 60 else str(delay) + " secs"
             disc = await bot.send_message(
                 user_id,
-                f"Please save the file to your saved messages, it will be deleted in {minsec}",
+                f"ഈ ഫയൽ എത്രയും വേഗം നിങ്ങളുടെ saved messages ലേക്ക് ഫോർവേഡ് ചെയ്ത് അവിടെ നിന്ന് ഡൗൺലോഡ് ചെയ്യുക, ഈ ചാറ്റിൽ നിന്നും {minsec} സമയത്തിനുള്ളിൽ ഡിലീറ്റ് ആവും.",
             )
             await asyncio.sleep(delay_dur)
             await disc.delete()
             await msg.delete()
-            await bot.send_message(user_id, "File has been deleted")
+            await bot.send_message(user_id, "File ഡിലീറ്റ് ചെയ്യപ്പെട്ടു!")
 
 
 def get_size(size):
