@@ -67,8 +67,9 @@ async def filter_(bot, message):
             return
 
     admin_settings = await get_admin_settings()
-    if admin_settings and admin_settings.repair_mode:
-        return
+    if admin_settings:
+        if admin_settings.repair_mode:
+            return
 
     fltr = await is_filter(message.text)
     if fltr:
@@ -81,16 +82,24 @@ async def filter_(bot, message):
     if 2 < len(message.text) < 100:
         search = message.text
         page_no = 1
-        me = await bot.get_me()
+        me = bot.me
         username = me.username
         result, btn = await get_result(search, page_no, user_id, username)
 
         if result:
-            await message.reply_text(
-                f"{result}",
-                link_preview_options=LinkPreviewOptions(is_disabled=True),
-                quote=True,
-            )
+            if btn:
+                await message.reply_text(
+                    f"{result}",
+                    reply_markup=InlineKeyboardMarkup(btn),
+                    link_preview_options=LinkPreviewOptions(is_disabled=True),
+                    quote=True,
+                )
+            else:
+                await message.reply_text(
+                    f"{result}",
+                    link_preview_options=LinkPreviewOptions(is_disabled=True),
+                    quote=True,
+                )
         else:
             await message.reply_text(
                 text="**NO RESULTS FOUND** 🧐\n \n Possible reasons: \n **1. Spelling തെറ്റായിരിക്കാം.** \n (സിനിമയുടെ പേര് മാത്രം കൃത്യമായി അയക്കുക.) \n **2. OTT ഇറങ്ങിയിട്ടുണ്ടാവില്ല.** \n (പുതിയ സിനിമകൾ OTT ഇറങ്ങിയ ശേഷം മാത്രമേ ബോട്ടിൽ കിട്ടുകയുള്ളൂ.) \n \n കൂടുതൽ സഹായത്തിന് /help അമർത്തുക. \n \n പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.",
@@ -98,30 +107,147 @@ async def filter_(bot, message):
             )
 
 
+@Client.on_callback_query(filters.regex(r"^(nxt_pg|prev_pg) \d+ \d+ .+$"))
+async def pages(bot, query):
+    user_id = query.from_user.id
+    org_user_id, page_no, search = query.data.split(maxsplit=3)[1:]
+    org_user_id = int(org_user_id)
+    page_no = int(page_no)
+    me = bot.me
+    username = me.username
+
+    result, btn = await get_result(search, page_no, user_id, username)
+
+    if result:
+        try:
+            if btn:
+                await query.message.edit(
+                    f"{result}",
+                    reply_markup=InlineKeyboardMarkup(btn),
+                    link_preview_options=LinkPreviewOptions(is_disabled=True),
+                )
+            else:
+                await query.message.edit(
+                    f"{result}",
+                    link_preview_options=LinkPreviewOptions(is_disabled=True),
+                )
+        except MessageNotModified:
+            pass
+    else:
+        await query.message.reply_text(
+            text="**NO RESULTS FOUND** 🧐\n \n Possible reasons: \n **1. Spelling തെറ്റായിരിക്കാം.** \n (സിനിമയുടെ പേര് മാത്രം കൃത്യമായി അയക്കുക.) \n **2. OTT ഇറങ്ങിയിട്ടുണ്ടാവില്ല.** \n (പുതിയ സിനിമകൾ OTT ഇറങ്ങിയ ശേഷം മാത്രമേ ബോട്ടിൽ കിട്ടുകയുള്ളൂ.) \n \n കൂടുതൽ സഹായത്തിന് /help അമർത്തുക. \n \n പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.",
+            quote=True,
+        )
+
+
 async def get_result(search, page_no, user_id, username):
     search_settings = await get_search_settings(user_id)
-    if search_settings and search_settings.precise_mode:
-        files, count = await get_precise_filter_results(query=search, page=page_no)
-        precise_search = "Enabled"
+    if search_settings:
+        if search_settings.precise_mode:
+            files, count = await get_precise_filter_results(query=search, page=page_no)
+            precise_search = "Enabled"
+        else:
+            files, count = await get_filter_results(query=search, page=page_no)
+            precise_search = "Disabled"
     else:
         files, count = await get_filter_results(query=search, page=page_no)
         precise_search = "Disabled"
 
-    search_md = "HyperLink"
+    if search_settings:
+        if search_settings.button_mode or search_settings.list_mode:
+            button_mode = "ON"
+        else:
+            button_mode = "OFF"
+    else:
+        button_mode = "OFF"
+
+    if search_settings:
+        if search_settings.link_mode:
+            link_mode = "ON"
+        else:
+            link_mode = "OFF"
+    else:
+        link_mode = "OFF"
+
+    if button_mode == "ON" and link_mode == "OFF":
+        search_md = "Button"
+    elif button_mode == "OFF" and link_mode == "ON":
+        search_md = "HyperLink"
+    else:
+        search_md = "Hyperlink"
 
     if files:
-        result = f"**Search Query:** `{search}`\n**Total Results:** `{count}`\n**Page:** `{page_no}`\n**Precise Search: **`{precise_search}`\n**Result Mode:** `{search_md}`\n"
+        btn = []
         index = (page_no - 1) * 10
-
+        crnt_pg = index // 10 + 1
+        tot_pg = (count + 10 - 1) // 10
+        btn_count = 0
+        result = f"**Search Query:** `{search}`\n**Total Results:** `{count}`\n**Page:** `{crnt_pg}/{tot_pg}`\n**Precise Search: **`{precise_search}`\n**Result Mode:** `{search_md}`\n"
+        page = page_no
         for file in files:
-            index += 1
-            file_id = file.file_id
-            filename = f"**{index}.** [{file.file_name}](https://t.me/{username}/?start={file_id}) - `[{get_size(file.file_size)}]`"
-            result += "\n" + filename
+            if button_mode == "ON":
+                file_id = file.file_id
+                filename = f"[{get_size(file.file_size)}]{file.file_name}"
+                btn_kb = InlineKeyboardButton(
+                    text=f"{filename}", callback_data=f"file {file_id}"
+                )
+                btn.append([btn_kb])
+            else:
+                index += 1
+                btn_count += 1
+                file_id = file.file_id
+                filename = f"**{index}.** [{file.file_name}](https://t.me/{username}/?start={file_id}) - `[{get_size(file.file_size)}]`"
+                result += "\n" + filename
+            # else:
+            #     index += 1
+            #     btn_count += 1
+            #     file_id = file.file_id
+            #     filename = (
+            #         f"**{index}.** `{file.file_name}` - `[{get_size(file.file_size)}]`"
+            #     )
+            #     result += "\n" + filename
 
-        result += "\n\n__ആവശ്യമുള്ള file name ൽ ക്ലിക്ക് ചെയ്യുക.__"
+            #     btn_kb = InlineKeyboardButton(
+            #         text=f"{index}", callback_data=f"file {file_id}"
+            #     )
 
-        return result, None
+            #     if btn_count == 1 or btn_count == 6:
+            #         btn.append([btn_kb])
+            #     elif 6 > btn_count > 1:
+            #         btn[0].append(btn_kb)
+            #     else:
+            #         btn[1].append(btn_kb)
+
+        nxt_kb = InlineKeyboardButton(
+            text="Next >>",
+            callback_data=f"nxt_pg {user_id} {page + 1} {search}",
+        )
+        prev_kb = InlineKeyboardButton(
+            text="<< Previous",
+            callback_data=f"prev_pg {user_id} {page - 1} {search}",
+        )
+
+        kb = []
+        if crnt_pg == 1 and tot_pg > 1:
+            kb = [nxt_kb]
+        elif crnt_pg > 1 and crnt_pg < tot_pg:
+            kb = [prev_kb, nxt_kb]
+        elif tot_pg > 1:
+            kb = [prev_kb]
+
+        if kb:
+            btn.append(kb)
+
+        if button_mode and link_mode == "OFF":
+            result = (
+                result
+                + "\n\n"
+                + "__ആവശ്യമുള്ള file name ൽ ക്ലിക്ക് ചെയ്യുക.__"
+            )
+        elif link_mode == "ON":
+            result = result + "\n\n" + " __ആവശ്യമുള്ള file name ൽ ക്ലിക്ക് ചെയ്യുക.__"
+
+        return result, btn
 
     return None, None
 
@@ -139,14 +265,15 @@ async def get_files(bot, query):
     filedetails = await get_file_details(file_id)
     admin_settings = await get_admin_settings()
     for files in filedetails:
-        f_caption = files.caption or f"{files.file_name}"
-
-        if admin_settings and admin_settings.custom_caption:
+        f_caption = files.caption
+        if admin_settings.custom_caption:
             f_caption = admin_settings.custom_caption
+        elif f_caption is None:
+            f_caption = f"{files.file_name}"
 
         f_caption = "`" + f_caption + "`"
 
-        if admin_settings and admin_settings.caption_uname:
+        if admin_settings.caption_uname:
             f_caption = f_caption + "\n" + admin_settings.caption_uname
 
         if cbq:
@@ -164,7 +291,7 @@ async def get_files(bot, query):
                 quote=True,
             )
 
-        if admin_settings and admin_settings.auto_delete:
+        if admin_settings.auto_delete:
             delay_dur = admin_settings.auto_delete
             delay = delay_dur / 60 if delay_dur > 60 else delay_dur
             delay = round(delay, 2)
