@@ -14,8 +14,10 @@ BASE = declarative_base()
 
 class Files(BASE):
     __tablename__ = "files"
-    file_name = Column(TEXT, primary_key=True)
-    file_id = Column(TEXT)
+    # FIX: file_id is unique per Telegram file, so it is the primary key.
+    # file_name is NOT unique (same name, different files) -> regular indexed column.
+    file_id = Column(TEXT, primary_key=True)
+    file_name = Column(TEXT, index=True)
     file_ref = Column(TEXT)
     file_size = Column(Numeric)
     file_type = Column(TEXT)
@@ -53,9 +55,6 @@ async def save_file(media):
             LOGGER.warning("%s is already saved in the database", media.file_name)
         except NoResultFound:
             try:
-            #     file = SESSION.query(Files).filter_by(file_name=media.file_name).one()
-            #     LOGGER.warning("%s is already saved in the database", media.file_name)
-            # except NoResultFound:
                 file = Files(
                     file_name=media.file_name,
                     file_id=file_id,
